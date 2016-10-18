@@ -1,0 +1,16 @@
+---
+# defaults file for nginx-add_new-sites
+host: example.com
+host_user: nginx
+doc_root: /home/demo/public_html
+Git_url1: https://github.com/agileblaze/PHP.git
+Git_url2: https://github.com/datacharmer/test_db.git
+version_name:
+database: employees.sql
+user_name: demo-project
+exclude_file:
+db_root_pwd: test@123
+db_user: test-user
+db_name: test-db
+db_user_pwd: testpwd
+

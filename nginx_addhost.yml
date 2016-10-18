@@ -1,0 +1,24 @@
+---
+ - hosts: all
+#   user: ubuntu
+   become: true
+#   vars_prompt:
+#   - name: db_root_pwd
+#     prompt: "Enter the Mysql root password"
+#     private: yes
+#   - name: db_name
+#     prompt: "Enter the Mysql database name"
+#     private: no
+#   - name: db_user
+#     prompt: "Enter the Mysql user name"
+#     private: no
+#   - name: db_user_pwd
+#     prompt: "Enter the Mysql user password"
+#     private: yes
+   vars_files:
+   - vars/nginx_addhost.yml
+
+   roles:
+    - packages
+    - nginx-addhost 
+    - code-deploy

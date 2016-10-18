@@ -1,0 +1,38 @@
+---
+# tasks file for packages
+- name: Update APT packages
+  apt: update_cache=yes
+  ignore_errors: yes
+  tags:
+     - pkg_update
+#  action: apt update_cache=yes
+ # ignore_errors: yes
+- name: Upgrade APT to the lastest packages
+  apt: upgrade=dist
+  ignore_errors: yes
+  tags:
+     - pkg_update
+
+- name: Install NGINX on Ubuntu
+  apt: name=nginx update_cache=yes state=latest
+  tags: 
+      - nginx
+- name: Install packages 
+  apt: name={{ item }} update_cache=yes state=latest
+  with_items:
+    - mysql-server
+    - mysql-client
+    - python-mysqldb
+    - libmysqlclient-dev
+    - dpkg-dev
+    - php-mysql
+    - php-gd
+    - php-dev
+    - php-curl
+    - php-cli
+    - php-json
+    - git
+    - php-fpm
+  tags:
+    - install_packages
+

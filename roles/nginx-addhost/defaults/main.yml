@@ -1,0 +1,9 @@
+---
+# defaults file for nginx-add_new-sites
+host:
+host_user:
+doc_root:
+db_user:
+db_name:
+db_user_pwd:
+

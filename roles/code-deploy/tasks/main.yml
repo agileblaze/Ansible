@@ -1,0 +1,41 @@
+---   
+   - name: Create directory to clone data from github
+     file: path=/home/release state=directory 
+
+   - git: 
+       repo: "{{ Git_url1 }}"
+       dest: /home/release/{{ user_name }} 
+       force: yes 
+       ssh_opts: -o StrictHostKeyChecking=no
+ 
+   - name: Sync the data with doc root.
+     synchronize:
+      src: /home/release/{{ user_name }}/ 
+      dest: "{{ doc_root }}"
+      rsync_opts:
+        - "--exclude=.gitignore"
+        - "--exclude=.git"   
+        - "--exclude={{ exclude_file }}" 
+     delegate_to: "{{ inventory_hostname }}"
+  
+
+   - name: change docroot perms
+     file: dest={{ doc_root }}  owner={{ host_user }} group={{host_user }} recurse=yes
+     when: ansible_os_family == "Debian"
+
+#   - git:
+#       repo: "{{ Git_url2 }}"
+#       dest: /home/release/{{ user_name }}/database
+#       force: yes
+#       ssh_opts: -o StrictHostKeyChecking=no
+#
+
+   - name: Import MySQL DB
+#     mysql_db: state=import name=all target=/home/release/{{ user_name }}/database/{{ database }} 
+     shell: mysql <  {{database }}  chdir=/home/release/{{ user_name }}/database/
+     when: db_name is defined 
+     tags:
+       - mysql-exist
+
+   - file: name=/home/release/{{ user_name }} state=absent
+

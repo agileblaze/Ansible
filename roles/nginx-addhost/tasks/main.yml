@@ -1,0 +1,21 @@
+---
+# tasks file for nginx-add_new-sites
+- debug: msg="System host is {{ inventory_hostname }} ."
+- name: Add host user for {{ host }} 
+  user: name={{ host_user }}  
+- group: name={{ host_user }}  state=present
+- name: Create doc root if not exists
+  file: path={{ doc_root }} state=directory mode=0755 owner={{ host_user }} group={{ host_user }}
+  when: ansible_os_family == "Debian"
+- name: create Template
+  template: src=php5-fpm-default-teplate.sock.j2 dest=/etc/php/7.0/fpm/pool.d/{{ host }}.conf 
+- name: Add server in nginx
+  template: src=new-vhost.j2 dest=/etc/nginx/sites-available/{{ host }}
+- name: Enable hosts
+  file: src=/etc/nginx/sites-available/{{ host }} dest=/etc/nginx/sites-enabled/{{ host }} state=link
+- include: database.yml
+#- shell: mysql -u{{ db_user }} -p{{ db_user_pwd }}  {{ db_name }} < {{ doc_root }}/employees.sql
+#  when: db_name is defined
+ # tags:
+  #  - mysql-exist
+ 

@@ -1,0 +1,66 @@
+server {
+    listen 80;
+
+    server_name {{host}} www.{{host}};
+    root /home/{{host_user}}/public_html;
+    index index.php index.html index.htm;
+    access_log /var/log/{{host_user}}_access.log;
+    error_log /var/log/{{host_user}}_error.log;
+
+    location / {
+        try_files $uri $uri/ /index.php;
+    }
+
+    error_page 500 502 503 504 /50x.html;
+
+    location = /50x.html {
+        root /usr/share/nginx/html/50x.html;
+    }
+
+    location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass unix:/var/run/php5-fpm-{{host_user}}.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+   location ~ /\.git
+    {
+        deny all;
+    }
+}
+
+#server {
+#
+#    listen 443;
+#    server_name {{host}} www.{{host}};
+#
+#    ssl_certificate           /etc/nginx/ssl/{{ host_user }}/sslcert.crt;
+#    ssl_certificate_key       /etc/nginx/ssl/{{ host_user }}/sslcert.key;
+#
+#    ssl on;
+#    ssl_session_cache  builtin:1000  shared:SSL:10m;
+#    ssl_protocols  TLSv1 TLSv1.1 TLSv1.2;
+#    ssl_ciphers HIGH:!aNULL:!eNULL:!EXPORT:!CAMELLIA:!DES:!MD5:!PSK:!RC4;
+#    ssl_prefer_server_ciphers on;
+#
+#    access_log            /var/log/nginx/{{ host_user }}.access.log;
+#
+#    location / {
+#
+#      proxy_set_header        Host $host;
+#      proxy_set_header        X-Real-IP $remote_addr;
+#      proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+#      proxy_set_header        X-Forwarded-Proto $scheme;
+#
+#      # Fix the “It appears that your reverse proxy set up is broken" error.
+#      proxy_pass          http://{{host}}:80;
+#      proxy_read_timeout  90;
+#
+#      proxy_redirect      http://{{host}}:80 https://{{host}};
+#    }
+#  }
+#
+

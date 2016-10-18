@@ -1,0 +1,8 @@
+galaxy_info:
+  author: Basheer.O 
+  description: 
+  company: Agileblaze Technologies Pvt. Ltd.
+  
+  license: license (GPLv2, CC-BY, etc)
+  min_ansible_version: 1.2
+
