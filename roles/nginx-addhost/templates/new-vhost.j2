@@ -2,10 +2,10 @@ server {
     listen 80;
 
     server_name {{host}} www.{{host}};
-    root /home/{{host_user}}/public_html;
+    root {{ doc_root }};
     index index.php index.html index.htm;
-    access_log /var/log/{{host_user}}_access.log;
-    error_log /var/log/{{host_user}}_error.log;
+    access_log /var/log/{{host}}_access.log;
+    error_log /var/log/{{host}}_error.log;
 
     location / {
         try_files $uri $uri/ /index.php;
@@ -17,17 +17,12 @@ server {
         root /usr/share/nginx/html/50x.html;
     }
 
-    location ~ \.php$ {
-        try_files $uri =404;
-        fastcgi_split_path_info ^(.+\.php)(/.+)$;
-        fastcgi_pass unix:/var/run/php5-fpm-{{host_user}}.sock;
-        fastcgi_index index.php;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        include fastcgi_params;
+       location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php7.0-fpm.sock;
     }
 
-   location ~ /\.git
-    {
+    location ~ /\.ht {
         deny all;
     }
 }

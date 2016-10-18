@@ -20,15 +20,15 @@
   
 
    - name: change docroot perms
-     file: dest={{ doc_root }}  owner={{ host_user }} group={{host_user }} recurse=yes
+     file: dest={{ doc_root }}  recurse=yes
      when: ansible_os_family == "Debian"
 
-#   - git:
-#       repo: "{{ Git_url2 }}"
-#       dest: /home/release/{{ user_name }}/database
-#       force: yes
-#       ssh_opts: -o StrictHostKeyChecking=no
-#
+   - git:
+       repo: "{{ Git_url2 }}"
+       dest: /home/release/{{ user_name }}/database
+       force: yes
+       ssh_opts: -o StrictHostKeyChecking=no
+
 
    - name: Import MySQL DB
 #     mysql_db: state=import name=all target=/home/release/{{ user_name }}/database/{{ database }} 
