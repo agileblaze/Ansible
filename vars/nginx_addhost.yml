@@ -9,8 +9,8 @@ version_name:
 database: employees.sql
 user_name: demo-project
 exclude_file:
-db_root_pwd: test@123
-db_user: test-user
-db_name: test-db
-db_user_pwd: testpwd
-
+#db_root_pwd: test@123
+#db_user: test-user
+#db_name: test-db
+#db_user_pwd: testpwd
+#

@@ -19,4 +19,8 @@
 
     - mysql_db: name={{ db_name }} login_user=root login_password={{ db_root_pwd }} state=present 
     #- mysql_db: name=wptestdb state=present login_user=root login_password={{ db-root_pwd }} 
-    - mysql_user: login_user=root login_password={{ db_root_pwd }}  name={{ db_user }} password={{ db_user_pwd }} priv={{ db_name }}.*:ALL state=present
+    - mysql_user: login_user=root login_password={{ db_root_pwd }}  name={{ db_user }} password={{ db_user_pwd }} append_privs=yes priv={{ item }}
+      with_items:
+        - '{{ db_name }}.*:ALL'
+        - 'employees.*:ALL'
+        - '*.*:SUPER,RELOAD'
